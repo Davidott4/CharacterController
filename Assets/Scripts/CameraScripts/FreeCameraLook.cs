@@ -5,11 +5,14 @@ public class FreeCameraLook : Pivot {
 	[SerializeField] private float moveSpeed = 5f;
 	[SerializeField] private float turnSpeed = 1.5f;
 	[SerializeField] private float turnSmoothing = .1f;
-	[SerializeField] private float tiltMax = 175f;
+	[SerializeField] private float tiltMax = 80f;
 	[SerializeField] private float tiltMin = 45f;
-	[SerializeField] private bool lockCursor = false;
+	[SerializeField] private bool lockTarget = false;
 
-
+	private PlayerControl playerControl;
+	private GameObject player;
+	private GameObject cameraTarget;
+	private Camera cam;
 	private float lookAngle;
 	private float tiltAngle;
 
@@ -24,9 +27,12 @@ public class FreeCameraLook : Pivot {
 	{
 		base.Awake();
 
+		player = GameObject.FindGameObjectWithTag("Player");
+		cameraTarget = GameObject.FindGameObjectWithTag("CameraTarget");
+		playerControl =  player.GetComponent<PlayerControl>();
 		Cursor.lockState = CursorLockMode.Confined;
-
-		camera = GetComponentInChildren<Camera>().transform;
+		cam = GetComponentInChildren<Camera>();
+		camera = cam.transform;
 		pivot = camera.parent;
 	}
 
@@ -35,12 +41,18 @@ public class FreeCameraLook : Pivot {
 	protected override void Update () {
 		base.Update();
 
-		HandleRotationMovement();
 
-		if (lockCursor && Input.GetMouseButtonUp(0))
+		Debug.Log(lockTarget);
+
+		lockTarget = playerControl.lockTarget;
+
+
+		if (lockTarget && Input.GetButtonDown("Lock Target")) 
 		{
 			Cursor.lockState = CursorLockMode.Confined;
 		}
+
+		HandleRotationMovement();
 	}
 
 	void onDisable()
@@ -55,8 +67,10 @@ public class FreeCameraLook : Pivot {
 
 	void HandleRotationMovement()
 	{
-		float x = Input.GetAxis("Mouse X");
-		float y = Input.GetAxis("Mouse Y");
+		float x = Input.GetAxis("Look Horizontal");
+		float y = Input.GetAxis("Look Vertical");
+		float smoothX =0;
+		float smoothY =0;
 
 		if (turnSmoothing >0)
 		{
@@ -68,15 +82,35 @@ public class FreeCameraLook : Pivot {
 			smoothX = x;
 			smoothY = y;
 		}
-		lookAngle += smoothX * turnSpeed;
 
-		transform.rotation = Quaternion.Euler(0f, lookAngle, 0);
+		//changed based on lockon
+		if (!lockTarget)
+		{
 
-		tiltAngle -= smoothY * turnSpeed;
-		tiltAngle = Mathf.Clamp(tiltAngle, -tiltMin, tiltMax);
+			lookAngle += smoothX * turnSpeed;
 
-		pivot.localRotation = Quaternion.Euler(tiltAngle,0,0);
+			transform.rotation = Quaternion.Euler(0f, lookAngle, 0);
 
+			tiltAngle -= smoothY * turnSpeed;
+			tiltAngle = Mathf.Clamp(tiltAngle, -tiltMin, tiltMax);
+
+			pivot.localRotation = Quaternion.Euler(tiltAngle,0,0);
+		}
+		else
+		{
+			lookAngle += smoothX * turnSpeed;
+
+			Vector3 dirToPlayer = target.transform.position - camera.transform.position;
+			Vector3 dirToCameraTarget = cameraTarget.transform.position  - camera.transform.position;
+			float angle = Vector3.Angle(dirToPlayer,dirToCameraTarget);
+			Debug.Log(angle);
+
+			transform.rotation = Quaternion.Euler(0f, lookAngle, 0);
+
+			tiltAngle -= smoothY * turnSpeed;
+			tiltAngle = Mathf.Clamp(tiltAngle, -tiltMin, tiltMax);
+
+			pivot.localRotation = Quaternion.Euler(tiltAngle,0,0);
+		}
 	}
-
 }

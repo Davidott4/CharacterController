@@ -35,6 +35,7 @@ public class PlayerControl : MonoBehaviour
 	public bool attackInput;
 	[HideInInspector] 
 	public bool blockInput;
+	public bool currentlyBlocking;
 
 	public bool lockTarget;
 	int currentTarget;
@@ -43,6 +44,7 @@ public class PlayerControl : MonoBehaviour
 	float targetTurnAmount;
 	float currentTurnAmount;
 	public bool canMove;
+	public bool canBlock;
 	public List<Transform> Enemies = new List<Transform>();
 
 	public Transform cameraTarget;
@@ -65,11 +67,14 @@ public class PlayerControl : MonoBehaviour
 
 
 	}
+
+
 	
 	void FixedUpdate()
 	{
 		HandleInput();
-		HandleCameraTarget();;
+		HandleCameraTarget();
+		HandleBlockInput();
 
 		if (canMove)
 		{
@@ -92,6 +97,22 @@ public class PlayerControl : MonoBehaviour
 					lockTarget = false; 
 				}
 			}
+		}
+
+
+	}
+
+	void HandleBlockInput()
+	{
+		if (canBlock && blockInput)
+		{
+			animator.SetBool("Block", true);
+			currentlyBlocking = true;
+		}
+		else
+		{
+			animator.SetBool("Block", false);
+			currentlyBlocking = false;
 		}
 
 	}
@@ -233,7 +254,7 @@ public class PlayerControl : MonoBehaviour
 
 	void ChangeTargetsLogic()
 	{
-		if (Input.GetButtonUp("Fire2"))
+		if (Input.GetButtonUp("Lock Target"))
 		{
 			lockTarget = !lockTarget;
 		}

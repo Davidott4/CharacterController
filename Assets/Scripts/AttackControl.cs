@@ -25,7 +25,7 @@ public class AttackControl : MonoBehaviour {
 	{
 		UpdateInput();
 		HandleAttacks();
-		HandleBlock();
+		//HandleBlock();
 	}
 
 	void UpdateInput()

@@ -56,6 +56,7 @@
      <Compile Include="Assets\Scripts\StateMachineBehaviours\CloseAttack.cs" />
      <Compile Include="Assets\Scripts\StateMachineBehaviours\CloseRolling.cs" />
      <Compile Include="Assets\Scripts\StateMachineBehaviours\DisableMovement.cs" />
+     <Compile Include="Assets\Scripts\StateMachineBehaviours\EnableBlocking.cs" />
      <Compile Include="Assets\Scripts\StateMachineBehaviours\EnableMovement.cs" />
      <Compile Include="Assets\Scripts\StateMachineBehaviours\EnableMovementStateExit.cs" />
      <Compile Include="Assets\Scripts\Stats.cs" />

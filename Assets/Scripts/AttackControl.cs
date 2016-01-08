@@ -25,7 +25,6 @@ public class AttackControl : MonoBehaviour {
 	{
 		UpdateInput();
 		HandleAttacks();
-		//HandleBlock();
 	}
 
 	void UpdateInput()
@@ -62,21 +61,7 @@ public class AttackControl : MonoBehaviour {
 			decreaseStamina = false;
 		}
 	}
-
-	void HandleBlock()
-	{
-		if(blockInput)
-		{
-			plControl.canMove = false;
-			blocking = true;
-			animator.SetBool("Block", true);
-		}	
-		else
-		{
-			blocking = false;
-			animator.SetBool("Block", false);
-		}
-	}
+		
 
 	IEnumerator InitiateAttack()
 	{

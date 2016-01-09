@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\CameraScripts\FollowTarget.cs" />
      <Compile Include="Assets\Scripts\CameraScripts\FreeCameraLook.cs" />
      <Compile Include="Assets\Scripts\CameraScripts\Pivot.cs" />
+     <Compile Include="Assets\Scripts\CameraScripts\ThirdPersonCamera.cs" />
      <Compile Include="Assets\Scripts\PlayerAnimations.cs" />
      <Compile Include="Assets\Scripts\PlayerControl.cs" />
      <Compile Include="Assets\Scripts\PlayerUIControl.cs" />
@@ -60,7 +61,6 @@
      <Compile Include="Assets\Scripts\StateMachineBehaviours\EnableMovement.cs" />
      <Compile Include="Assets\Scripts\StateMachineBehaviours\EnableMovementStateExit.cs" />
      <Compile Include="Assets\Scripts\Stats.cs" />
-     <Compile Include="Assets\Scripts\ThirdPersonCamera.cs" />
      <Compile Include="Assets\Scripts\UpdateTargets.cs" />
      <None Include="Assets\Standard Assets\Prototyping\Shaders\WorldCoordDiffuse.shader" />
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />

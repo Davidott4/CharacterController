@@ -59,7 +59,8 @@ public class PlayerControl : MonoBehaviour
 		//setup references
 		rigidBody = GetComponent<Rigidbody>();
 		camera = Camera.main.transform;
-		cameraHolder = camera.parent.parent;
+		//camera = Camera.main.transform;
+		//cameraHolder = camera.parent.parent;
 		capsuleCollider = GetComponent<CapsuleCollider>();
 		SetupAnimator();
 
@@ -125,7 +126,8 @@ public class PlayerControl : MonoBehaviour
 		attackInput = Input.GetButton("Attack");
 		blockInput = Input.GetButton("Block");
 
-		storeDir = cameraHolder.right; //get the direction from the camera holder instead of the camera
+		storeDir = camera.right;
+		//storeDir = cameraHolder.right; //get the direction from the camera holder instead of the camera
 		//so we avoid differences in velocity based on where the camera is looking
 
 		ChangeTargetsLogic();
@@ -136,10 +138,11 @@ public class PlayerControl : MonoBehaviour
 		canMove = animator.GetBool("CanMove");
 
 		Vector3 dirForward = storeDir * horizontal;
-		Vector3 dirSideways = cameraHolder.forward * vertical;
+		Vector3 dirSideways = camera.forward * vertical;
+		//Vector3 dirSideways = cameraHolder.forward * vertical;
 
-		if (canMove) // Normalize the direction before applying so we dont move faster wile holding both axeses
-			rigidBody.AddForce((dirForward + dirSideways).normalized * speed / Time.deltaTime);
+		//if (canMove) // Normalize the direction before applying so we dont move faster wile holding both axeses
+			//rigidBody.AddForce((dirForward + dirSideways).normalized * speed / Time.deltaTime);
 
 		directionPos = transform.position + (storeDir * horizontal) + (camera.forward * vertical);
 
@@ -166,6 +169,9 @@ public class PlayerControl : MonoBehaviour
 			}
 		}
 
+		// handle rotation only when we move, not attack or rolling
+		cameraTarget.transform.forward = transform.forward;
+
 	}
 
 	void HandleCameraTarget()
@@ -173,6 +179,7 @@ public class PlayerControl : MonoBehaviour
 		if (!lockTarget)
 		{
 			targetPos = transform.position;
+
 		}
 		else
 		{
@@ -187,24 +194,30 @@ public class PlayerControl : MonoBehaviour
 
 				targetPos += transform.position;
 
+				cameraTarget.transform.forward = direction;
+
 				if(distance >maxLockDistance)
 				{
 					lockTarget = false;
 				}
 			}
+
 		}
 
 		cameraTarget.position = Vector3.Lerp(cameraTarget.position, targetPos, Time.deltaTime * cameraTargetSpeed);
+
 		
 	}
 
 	void HandleMovementLockOn()
 	{
-		Transform camHolder = camera.parent.parent;
+		//Transform camHolder = camera.parent.parent;
 		//Make sure it has corect scale
 
-		Vector3 camForward = Vector3.Scale(cameraHolder.forward, new Vector3(1,0,1)).normalized;
-		Vector3 camRight = Vector3.Scale(cameraHolder.right, new Vector3(1,0,1)).normalized;
+		Vector3 camForward = Vector3.Scale(camera.forward, new Vector3(1,0,1)).normalized;
+		Vector3 camRight = Vector3.Scale(camera.right, new Vector3(1,0,1)).normalized;
+		//Vector3 camForward = Vector3.Scale(cameraHolder.forward, new Vector3(1,0,1)).normalized;
+		//Vector3 camRight = Vector3.Scale(cameraHolder.right, new Vector3(1,0,1)).normalized;
 
 		Vector3 move = vertical * camForward + horizontal * camRight;
 
@@ -212,7 +225,7 @@ public class PlayerControl : MonoBehaviour
 		Vector3 moveSideways = camRight * horizontal;
 
 		// apply force
-		rigidBody.AddForce((moveForward + moveSideways).normalized * speed/ Time.deltaTime);
+		//rigidBody.AddForce((moveForward + moveSideways).normalized * speed/ Time.deltaTime);
 
 		ConvertMoveInputAndPassItToAnimator(move);
 		

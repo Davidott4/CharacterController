@@ -37,11 +37,11 @@ public class AttackControl : MonoBehaviour {
 	{
 		if (currentlyAttacking)
 		{
-			animator.applyRootMotion = true;
+			//animator.applyRootMotion = true;
 		}
 		else
 		{
-			animator.applyRootMotion = false;
+			//animator.applyRootMotion = false;
 		}
 
 		if (attackInput && !blocking && !currentlyAttacking)

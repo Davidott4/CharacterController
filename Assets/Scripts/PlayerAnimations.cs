@@ -16,7 +16,8 @@ public class PlayerAnimations : MonoBehaviour {
 
 	Vector3 directionPos;
 	Vector3 storeDir;
-	Transform cameraHolder;
+	//Transform cameraHolder;
+	Transform camera;
 	Rigidbody rigidBody;
 	Animator animator;
 
@@ -30,7 +31,8 @@ public class PlayerAnimations : MonoBehaviour {
 	void Start () 
 	{
 		playerControl = GetComponent<PlayerControl>();
-		cameraHolder = playerControl.cameraHolder;
+		//cameraHolder = playerControl.cameraHolder;
+		camera = Camera.main.transform;
 		rigidBody = GetComponent<Rigidbody>();
 		animator = GetComponent<Animator>();
 	}
@@ -41,7 +43,8 @@ public class PlayerAnimations : MonoBehaviour {
 		this.rollInput = playerControl.rollInput;
 		this.horizontal = playerControl.horizontal;
 		this.vertical = playerControl.vertical;
-		storeDir = cameraHolder.right;
+		storeDir = camera.transform.right;
+		//storeDir = cameraHolder.right;
 
 
 
@@ -60,9 +63,11 @@ public class PlayerAnimations : MonoBehaviour {
 			if(!hasDirection)
 			{
 				dirForward = storeDir * horizontal;
-				dirSideways = cameraHolder.forward * vertical;
+				dirSideways = camera.transform.forward * vertical;
+				//dirSideways = cameraHolder.forward * vertical;
 
-				directionPos = transform.position + (storeDir * horizontal) + (cameraHolder.forward * vertical);
+				//directionPos = transform.position + (storeDir * horizontal) + (cameraHolder.forward * vertical);
+				directionPos = transform.position + (storeDir * horizontal) + (camera.transform.forward *vertical);
 				dir = directionPos - transform.position;
 				dir.y = 0;
 
